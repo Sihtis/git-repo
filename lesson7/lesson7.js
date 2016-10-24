@@ -1,5 +1,5 @@
 ﻿function createChessBoard() {
-	var wrapper = document.createElement('div');
+	var chessBoard = document.createElement('div');
 	var div = document.createElement('div');
 	div.style.height='50px';
 	div.style.width='50px';
@@ -9,38 +9,41 @@
 		if (i%2==1) 
 			if (j%2==1) { 
 				var whiteCell = createCell('#fff'); 
-				wrapper.appendChild(whiteCell); 
+				chessBoard.appendChild(whiteCell); 
 			}
 			else { 
 				var blackCell = createCell('#888'); 
-				wrapper.appendChild(blackCell); 
+				chessBoard.appendChild(blackCell); 
 			}
 		else if (j%2==1) { 
 			var blackCell = createCell('#888');
-			wrapper.appendChild(blackCell); 
+			chessBoard.appendChild(blackCell); 
 			}
 		else { 
 			var whiteCell = createCell('#fff'); 
-			wrapper.appendChild(whiteCell); 
+			chessBoard.appendChild(whiteCell); 
 			}
 	var div = document.createElement('div');
 	div.style.clear = 'left';
-	wrapper.appendChild(div);
+	chessBoard.appendChild(div);
 	}
-	wrapper.style.margin = '0 auto';
-	wrapper.style.width = '800px';
-	wrapper.style.border = '50px solid silver';
-	wrapper.setAttribute('id','chessBoard');
-	return wrapper;
+	chessBoard.style.margin = '0 auto';
+	chessBoard.style.width = '800px';
+	chessBoard.style.border = '50px solid silver';
+	chessBoard.setAttribute('id','chessBoard');
+	chessBoard = setAllCellsAddress(chessBoard);
+	return chessBoard;
 }
 
 function createCell(color) {
-	var divWhite = document.createElement('div');
-	divWhite.style.backgroundColor = color;
-	divWhite.style.width = '100px';
-	divWhite.style.height = '100px';
-	divWhite.style.float = 'left';
-	return divWhite;
+	var div = document.createElement('div');
+	div.style.backgroundColor = color;
+	div.style.width = '100px';
+	div.style.height = '100px';
+	div.style.border = '2px solid '+color;
+	div.style.boxSizing = 'border-box';
+	div.style.float = 'left';
+	return div;
 }
 
 function addNotation(chessBoard) {
@@ -118,28 +121,64 @@ function addFigures(chessBoard) {
 		'&#9814'
 	]
 	for (var i=0; i<8; i++) {
-		document.getElementById('chessBoard').childNodes[i].innerHTML = blackChessFiguresArray[i];
+		chessBoard.childNodes[i].innerHTML = blackChessFiguresArray[i];
 	}
 	for (var i=8; i<16; i++) {
-		document.getElementById('chessBoard').childNodes[i+1].innerHTML = blackChessFiguresArray[i];
+		chessBoard.childNodes[i+1].innerHTML = blackChessFiguresArray[i];
 	}
 	for (var i=54; i<62; i++) {
-		document.getElementById('chessBoard').childNodes[i].innerHTML = whiteChessFiguresArray[i-54];
+		chessBoard.childNodes[i].innerHTML = whiteChessFiguresArray[i-54];
 	}
 	for (var i=63; i<71; i++) {
-		document.getElementById('chessBoard').childNodes[i].innerHTML = whiteChessFiguresArray[i-55];
+		chessBoard.childNodes[i].innerHTML = whiteChessFiguresArray[i-55];
 	}
 	for(var i=0; i<71; i++) {
-		document.getElementById('chessBoard').childNodes[i].style.textAlign = 'center';
-		document.getElementById('chessBoard').childNodes[i].style.fontSize = '80px';
-		document.getElementById('chessBoard').childNodes[i].style.lineHeight = '100px';
+		chessBoard.childNodes[i].style.textAlign = 'center';
+		chessBoard.childNodes[i].style.fontSize = '80px';
+		chessBoard.childNodes[i].style.lineHeight = '100px';
 	}
+	return chessBoard;
+}
+
+function setAllCellsAddress(chessBoard) {
+		var addressArray = [ 'a8', 'b8', 'c8', 'd8', 'e8', 'f8', 'g8', 'h8',
+							 'a7', 'b7', 'c7', 'd7', 'e7', 'f7', 'g7', 'h7',
+							 'a6', 'b6', 'c6', 'd6', 'e6', 'f6', 'g6', 'h6',
+							 'a5', 'b5', 'c5', 'd5', 'e5', 'f5', 'g5', 'h5',
+							 'a4', 'b4', 'c4', 'd4', 'e4', 'f4', 'g4', 'h4',
+							 'a3', 'b3', 'c3', 'd3', 'e3', 'f3', 'g3', 'h3',
+							 'a2', 'b2', 'c2', 'd2', 'e2', 'f2', 'g2', 'h2',
+							 'a1', 'b1', 'c1', 'd1', 'e1', 'f1', 'g1', 'h1']
+		for(var i=0; i<8; i++) {
+			chessBoard.childNodes[i].setAttribute('id',addressArray[i]);
+			chessBoard.childNodes[i+9].setAttribute('id',addressArray[i+8]);
+			chessBoard.childNodes[i+18].setAttribute('id',addressArray[i+16]);
+			chessBoard.childNodes[i+27].setAttribute('id',addressArray[i+24]);
+			chessBoard.childNodes[i+36].setAttribute('id',addressArray[i+32]);
+			chessBoard.childNodes[i+45].setAttribute('id',addressArray[i+40]);
+			chessBoard.childNodes[i+54].setAttribute('id',addressArray[i+48]);
+			chessBoard.childNodes[i+63].setAttribute('id',addressArray[i+56]);
+		}
+	return chessBoard;
+}
+
+function selectCell(chessBoard) {
+	for (var i=0; i<71; i++)
+		chessBoard.childNodes[i].addEventListener('click', function() {		if (chessBoard.getElementsByClassName('selected').length!=0) {
+																				chessBoard.getElementsByClassName('selected')[0].style.borderColor = chessBoard.getElementsByClassName('selected')[0].style.backgroundColor;
+																				chessBoard.getElementsByClassName('selected')[0].removeAttribute('class');
+																			}
+																			this.setAttribute('class', 'selected');
+																			this.style.border = '2px solid red';		
+																	  });
+	return chessBoard;
 }
 
 window.onload = function() {
 	document.body.style.background = '#555';
 	var chessBoard = createChessBoard();
-	chessboard = addNotation(chessBoard);
+	chessBoard = addNotation(chessBoard);
 	document.body.appendChild(chessBoard);
-	chessboard = addFigures(chessBoard);
+	chessBoard = addFigures(chessBoard);
+	chessBoard = selectCell(chessBoard);
 }
