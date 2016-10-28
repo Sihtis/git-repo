@@ -167,7 +167,8 @@ function selectCell(chessBoard) {
 		chessBoard.childNodes[i].addEventListener('click', function() {		if (chessBoard.getElementsByClassName('selected').length!=0) {
 																				chessBoard.getElementsByClassName('selected')[0].style.borderColor = chessBoard.getElementsByClassName('selected')[0].style.backgroundColor;
 																				if (chessBoard.getElementsByClassName('prevSelected').length!=0) {
-																				chessBoard.getElementsByClassName('prevSelected')[0].removeAttribute('class'); }
+																					chessBoard.getElementsByClassName('prevSelected')[0].removeAttribute('class'); 
+																					}
 																					chessBoard.getElementsByClassName('selected')[0].setAttribute('class','prevSelected');
 																					var array = chessBoard.getElementsByClassName('prevSelected');
 																					console.log(array);
@@ -178,13 +179,18 @@ function selectCell(chessBoard) {
 	return chessBoard;
 }
 
-// function moveFigure(chessBoard) {
-	// for (var i=0; i<71; i++)
-		// chessBoard.childNodes[i].addEventListener('click', function() {		if (chessBoard.getElementsByClassName('selected').length!=0 && chessBoard.getElementsByClassName('selected')[].innerHTML!='') {
-																				// this.innerHTML=chessBoard.getElementsByClassName('selected')[1]
-																	  // });
-	// return chessBoard;
-// }
+function moveFigure(chessBoard) {
+	for (var i=0; i<71; i++)
+		chessBoard.childNodes[i].addEventListener('click', function() {		if (chessBoard.getElementsByClassName('prevSelected').length!=0 && chessBoard.getElementsByClassName('prevSelected')[0].innerHTML!='') {
+																				this.innerHTML = chessBoard.getElementsByClassName('prevSelected')[0].innerHTML;
+																				chessBoard.getElementsByClassName('prevSelected')[0].innerHTML = '';
+																				chessBoard.getElementsByClassName('selected')[0].style.borderColor = chessBoard.getElementsByClassName('selected')[0].style.backgroundColor;
+																				chessBoard.getElementsByClassName('selected')[0].removeAttribute('class');
+																				chessBoard.getElementsByClassName('prevSelected')[0].removeAttribute('class');
+																			}
+																	  });
+	return chessBoard;
+}
 
 window.onload = function() {
 	document.body.style.background = '#555';
@@ -193,5 +199,5 @@ window.onload = function() {
 	document.body.appendChild(chessBoard);
 	chessBoard = addFigures(chessBoard);
 	chessBoard = selectCell(chessBoard);
-	//chessBoard = moveFigure(chessBoard);
+	chessBoard = moveFigure(chessBoard);
 }
