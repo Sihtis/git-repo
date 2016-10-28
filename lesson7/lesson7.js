@@ -182,14 +182,21 @@ function selectCell(chessBoard) {
 function moveFigure(chessBoard) {
 	for (var i=0; i<71; i++)
 		chessBoard.childNodes[i].addEventListener('click', function() {		if (chessBoard.getElementsByClassName('prevSelected').length!=0 && chessBoard.getElementsByClassName('prevSelected')[0].innerHTML!='') {
-																				if (((this.innerHTML<='♙' || this.innerHTML=='') && chessBoard.getElementsByClassName('prevSelected')[0].innerHTML>'♙') ||
-																					((this.innerHTML>'♙' || this.innerHTML=='') && chessBoard.getElementsByClassName('prevSelected')[0].innerHTML<='♙')) {
+																				if (this.innerHTML!='♚' && this.innerHTML!='♔') {
+																						if	(((this.innerHTML<='♙' || this.innerHTML=='') && chessBoard.getElementsByClassName('prevSelected')[0].innerHTML>'♙') ||
+																							((this.innerHTML>'♙' || this.innerHTML=='') && chessBoard.getElementsByClassName('prevSelected')[0].innerHTML<='♙')) {
 																						this.innerHTML = chessBoard.getElementsByClassName('prevSelected')[0].innerHTML;
 																						chessBoard.getElementsByClassName('prevSelected')[0].innerHTML = '';
 																						chessBoard.getElementsByClassName('selected')[0].style.borderColor = chessBoard.getElementsByClassName('selected')[0].style.backgroundColor;
 																						chessBoard.getElementsByClassName('selected')[0].removeAttribute('class');
 																						chessBoard.getElementsByClassName('prevSelected')[0].removeAttribute('class');
-																				}
+																				}}
+																				else if (this.innerHTML=='♔' || this.innerHTML=='♚') {
+																						chessBoard.getElementsByClassName('selected')[0].style.borderColor = chessBoard.getElementsByClassName('selected')[0].style.backgroundColor;
+																						chessBoard.getElementsByClassName('selected')[0].removeAttribute('class');
+																						chessBoard.getElementsByClassName('prevSelected')[0].setAttribute('class','selected');
+																						chessBoard.getElementsByClassName('selected')[0].style.border = '2px solid red';
+																					}
 																			}
 																	  });
 	return chessBoard;
